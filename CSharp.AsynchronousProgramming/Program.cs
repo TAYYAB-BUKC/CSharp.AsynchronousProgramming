@@ -5,7 +5,9 @@ Console.WriteLine("Program Start");
 
 //LifeBeforeAsync.RunExample();
 
-await LifeAfterAsync.RunExample();
+//await LifeAfterAsync.RunExample();
+
+await ParallelProgramming.RunExample();
 
 Console.WriteLine("Program End");
 Console.ReadLine();
