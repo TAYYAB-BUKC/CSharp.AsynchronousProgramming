@@ -7,7 +7,9 @@ Console.WriteLine("Program Start");
 
 //await LifeAfterAsync.RunExample();
 
-await ParallelProgramming.RunExample();
+//await ParallelProgramming.RunExample();
+
+await AsyncAwaitInActionExample.GetLibraries();
 
 Console.WriteLine("Program End");
 Console.ReadLine();
