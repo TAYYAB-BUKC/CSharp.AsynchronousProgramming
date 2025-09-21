@@ -5,6 +5,8 @@
 		private readonly Lock _lock = new();
 		private bool _completed;
 		private Exception _exception;
+		private Action? _action;
+		private ExecutionContext _executionContext;
 
 		public bool IsCompleted 
 		{
@@ -54,6 +56,36 @@
 					task.SetException(ex);
 				}
 			});
+
+			return task;
+		}
+
+		public CustomTask ContinueWith(Action action)
+		{
+			CustomTask task = new CustomTask();
+			lock (_lock)
+			{
+				if (_completed)
+				{
+					ThreadPool.QueueUserWorkItem(_ =>
+					{
+						try
+						{
+							action();
+							task.SetResult();
+						}
+						catch (Exception ex)
+						{
+							task.SetException(ex);
+						}
+					});
+				}
+				else
+				{
+					_action = action;
+					_executionContext = ExecutionContext.Capture();
+				}
+			}
 
 			return task;
 		}
