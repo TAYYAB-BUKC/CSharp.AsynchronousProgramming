@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.ExceptionServices;
 
 namespace CSharp.AsynchronousProgramming
 {
@@ -96,6 +97,31 @@ namespace CSharp.AsynchronousProgramming
 			}
 
 			return task;
+		}
+
+		public void Wait()
+		{
+			ManualResetEventSlim? resetEventSlim = null;
+
+			lock (_lock)
+			{
+				if (!_completed)
+				{
+					resetEventSlim = new();
+					ContinueWith(() =>
+					{
+						resetEventSlim.Set();
+					});
+
+				}
+			}
+
+			resetEventSlim?.Wait();
+
+			if(_exception is not null)
+			{
+				ExceptionDispatchInfo.Throw(_exception);
+			}
 		}
 	}
 }
