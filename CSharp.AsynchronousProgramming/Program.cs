@@ -11,9 +11,7 @@ Console.WriteLine("Program Start");
 
 //await AsyncAwaitInActionExample.GetLibraries();
 
-Console.WriteLine($"Current Thread Id: {Thread.CurrentThread.ManagedThreadId}");
-
-CustomTask.Run(() => Console.WriteLine($"Current Thread Id: {Thread.CurrentThread.ManagedThreadId}"));
+CustomTaskInActionExample.RunExample();
 
 Console.WriteLine("Program End");
 Console.ReadLine();
