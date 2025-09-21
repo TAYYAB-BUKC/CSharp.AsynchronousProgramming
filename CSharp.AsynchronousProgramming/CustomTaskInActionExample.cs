@@ -12,23 +12,38 @@
 
 			//CustomTask.Run(() => Console.WriteLine($"NEW CustomTask Thread Id: {Environment.CurrentManagedThreadId}"));
 
-			var task = CustomTask
-						.Run(() =>
+			#region Without Wait
+			//var task = CustomTask
+			//			.Run(() =>
+			//			{
+			//				Console.WriteLine($"First CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
+			//			});
+
+			//task.ContinueWith(() =>
+			//{
+			//	Console.WriteLine($"Second CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
+
+			//	CustomTask
+			//			.Run(() =>
+			//			{
+			//				Console.WriteLine($"Third Inner CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
+			//			});
+			//});
+			#endregion
+
+			#region With Wait
+			CustomTask.Run(() =>
 						{
 							Console.WriteLine($"First CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
-						});
+						}).Wait();
 
-			task.ContinueWith(() =>
-			{	
-				Console.WriteLine($"Second CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
+			Console.WriteLine($"Second CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
 
-				CustomTask
-						.Run(() =>
+			CustomTask.Run(() =>
 						{
 							Console.WriteLine($"Third Inner CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
-						});
-
-			});
+						}).Wait();
+			#endregion
 		}
 	}
 }
