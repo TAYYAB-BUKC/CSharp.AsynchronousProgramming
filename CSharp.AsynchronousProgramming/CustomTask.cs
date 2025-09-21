@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 
 namespace CSharp.AsynchronousProgramming
@@ -132,5 +132,27 @@ namespace CSharp.AsynchronousProgramming
 
 			return task;
 		}
+
+		public CustomTaskAwaiter GetAwaiter() => new(this);
+	}
+
+	public readonly struct CustomTaskAwaiter : INotifyCompletion
+	{
+		private readonly CustomTask task;
+		public bool IsCompleted => task.IsCompleted;
+
+		internal CustomTaskAwaiter(CustomTask task)
+		{
+			this.task = task;
+		}
+
+		public void OnCompleted(Action continuation)
+		{
+			task.ContinueWith(continuation);
+		}
+
+		public CustomTaskAwaiter GetAwaiter() => this;
+
+		public void GetResult() => task.Wait();
 	}
 }

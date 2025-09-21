@@ -2,7 +2,7 @@
 {
 	public class CustomTaskInActionExample
 	{
-		public static void RunExample()
+		public static async Task RunExample()
 		{
 			Console.WriteLine($"Caller Thread Id: {Environment.CurrentManagedThreadId}");
 
@@ -46,21 +46,39 @@
 			#endregion
 
 			#region With Wait And Delay
-			CustomTask.Run(() =>
+			//CustomTask.Run(() =>
+			//{
+			//	Console.WriteLine($"First CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
+			//}).Wait();
+
+			//CustomTask.Delay(TimeSpan.FromSeconds(3)).Wait();
+
+			//Console.WriteLine($"Second CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
+
+			//CustomTask.Delay(TimeSpan.FromSeconds(3)).Wait();
+
+			//CustomTask.Run(() =>
+			//{
+			//	Console.WriteLine($"Third Inner CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
+			//}).Wait();
+			#endregion
+
+			#region With Await
+			await CustomTask.Run(() =>
 			{
 				Console.WriteLine($"First CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
-			}).Wait();
+			});
 
-			CustomTask.Delay(TimeSpan.FromSeconds(3)).Wait();
+			await CustomTask.Delay(TimeSpan.FromSeconds(3));
 
 			Console.WriteLine($"Second CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
 
-			CustomTask.Delay(TimeSpan.FromSeconds(3)).Wait();
+			await CustomTask.Delay(TimeSpan.FromSeconds(3));
 
-			CustomTask.Run(() =>
+			await CustomTask.Run(() =>
 			{
 				Console.WriteLine($"Third Inner CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
-			}).Wait();
+			});
 			#endregion
 		}
 	}
