@@ -9,7 +9,11 @@ Console.WriteLine("Program Start");
 
 //await ParallelProgramming.RunExample();
 
-await AsyncAwaitInActionExample.GetLibraries();
+//await AsyncAwaitInActionExample.GetLibraries();
+
+Console.WriteLine($"Current Thread Id: {Thread.CurrentThread.ManagedThreadId}");
+
+CustomTask.Run(() => Console.WriteLine($"Current Thread Id: {Thread.CurrentThread.ManagedThreadId}"));
 
 Console.WriteLine("Program End");
 Console.ReadLine();
