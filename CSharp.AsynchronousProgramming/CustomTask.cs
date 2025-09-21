@@ -1,4 +1,6 @@
-﻿namespace CSharp.AsynchronousProgramming
+﻿using System;
+
+namespace CSharp.AsynchronousProgramming
 {
 	public class CustomTask
 	{
@@ -19,25 +21,31 @@
 			}
 		}
 
-		public void SetException(Exception exception)
+		public void SetException(Exception exception) => CompleteTask(exception);
+
+		public void SetResult() => CompleteTask(null);
+
+		public void CompleteTask(Exception? exception)
 		{
 			lock (_lock)
 			{
 				if (_completed)
-					throw new InvalidOperationException("CustomTask already completed. Cannot set an exception on the completed task.");
+					throw new InvalidOperationException("CustomTask already completed. Cannot perform operation on the completed task.");
 
-				_exception = exception;
-			}
-		}
-
-		public void SetResult()
-		{
-			lock (_lock)
-			{
-				if (_completed)
-					throw new InvalidOperationException("CustomTask already completed. Cannot set a result on the completed task.");
-				
 				_completed = true;
+				_exception = exception;
+
+				if(_action is not null)
+				{
+					if(_executionContext is null)
+					{
+						_action.Invoke();
+					}
+					else
+					{
+						ExecutionContext.Run(_executionContext, state => ((Action?)state)?.Invoke(), _action);
+					}
+				}
 			}
 		}
 
