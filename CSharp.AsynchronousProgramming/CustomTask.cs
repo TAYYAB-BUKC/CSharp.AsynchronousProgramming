@@ -123,5 +123,14 @@ namespace CSharp.AsynchronousProgramming
 				ExceptionDispatchInfo.Throw(_exception);
 			}
 		}
+
+		public static CustomTask Delay(TimeSpan timeSpan)
+		{
+			CustomTask task = new CustomTask();
+
+			new Timer(_ => task.SetResult()).Change(timeSpan, Timeout.InfiniteTimeSpan);
+
+			return task;
+		}
 	}
 }

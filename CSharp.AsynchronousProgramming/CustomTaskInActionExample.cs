@@ -32,17 +32,35 @@
 			#endregion
 
 			#region With Wait
+			//CustomTask.Run(() =>
+			//			{
+			//				Console.WriteLine($"First CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
+			//			}).Wait();
+
+			//Console.WriteLine($"Second CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
+
+			//CustomTask.Run(() =>
+			//			{
+			//				Console.WriteLine($"Third Inner CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
+			//			}).Wait();
+			#endregion
+
+			#region With Wait And Delay
 			CustomTask.Run(() =>
-						{
-							Console.WriteLine($"First CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
-						}).Wait();
+			{
+				Console.WriteLine($"First CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
+			}).Wait();
+
+			CustomTask.Delay(TimeSpan.FromSeconds(3)).Wait();
 
 			Console.WriteLine($"Second CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
 
+			CustomTask.Delay(TimeSpan.FromSeconds(3)).Wait();
+
 			CustomTask.Run(() =>
-						{
-							Console.WriteLine($"Third Inner CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
-						}).Wait();
+			{
+				Console.WriteLine($"Third Inner CustomTask Thread Id: {Environment.CurrentManagedThreadId}");
+			}).Wait();
 			#endregion
 		}
 	}
