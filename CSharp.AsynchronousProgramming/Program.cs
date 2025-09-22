@@ -11,7 +11,9 @@ Console.WriteLine("Program Start");
 
 //await AsyncAwaitInActionExample.GetLibraries();
 
-CustomTaskInActionExample.RunExample();
+//CustomTaskInActionExample.RunExample();
+
+ThreadStatic.RunExample();
 
 Console.WriteLine("Program End");
 Console.ReadLine();
