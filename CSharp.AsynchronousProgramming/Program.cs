@@ -13,7 +13,9 @@ Console.WriteLine("Program Start");
 
 //CustomTaskInActionExample.RunExample();
 
-ThreadStatic.RunExample();
+//ThreadStatic.RunExample();
+
+ExecutionContextExample.RunExample();
 
 Console.WriteLine("Program End");
 Console.ReadLine();
